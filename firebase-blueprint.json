@@ -1,0 +1,944 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Authenticated Spark AI user account and role state",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "fullName": { "type": "string" },
+        "username": { "type": "string" },
+        "country": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "role": { "type": "string", "enum": ["creator", "admin"] },
+        "accountStatus": { "type": "string", "enum": ["active", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "email", "fullName", "username", "role", "accountStatus", "createdAt", "updatedAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User studio preferences, theme, movie defaults, and privacy controls",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "bio": { "type": "string" },
+        "darkMode": { "type": "boolean" },
+        "appLanguage": { "type": "string" },
+        "notificationsEnabled": { "type": "boolean" },
+        "soundEnabled": { "type": "boolean" },
+        "videoAutoplay": { "type": "boolean" },
+        "defaultQuality": { "type": "string" },
+        "defaultAspectRatio": { "type": "string" },
+        "defaultResolution": { "type": "string" },
+        "defaultDurationSec": { "type": "integer" },
+        "defaultMovieLanguage": { "type": "string" },
+        "defaultVoice": { "type": "string" },
+        "defaultGenre": { "type": "string" },
+        "autoSubtitles": { "type": "boolean" },
+        "autoSaveProjects": { "type": "boolean" },
+        "defaultPrivacy": { "type": "string", "enum": ["private", "shared_link", "public"] },
+        "allowDownloads": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "darkMode", "defaultAspectRatio", "defaultResolution", "defaultDurationSec", "updatedAt"]
+    },
+    "MovieProject": {
+      "title": "MovieProject",
+      "description": "Movie creation project supporting short and long multi-scene durations",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "genre": { "type": "string" },
+        "countryLocation": { "type": "string" },
+        "language": { "type": "string" },
+        "mainCharacterSummary": { "type": "string" },
+        "characterAppearance": { "type": "string" },
+        "characterClothing": { "type": "string" },
+        "characterAgeRange": { "type": "string" },
+        "cameraAngle": { "type": "string" },
+        "lighting": { "type": "string" },
+        "atmosphere": { "type": "string" },
+        "backgroundSetting": { "type": "string" },
+        "visualStyle": { "type": "string" },
+        "voiceStyle": { "type": "string" },
+        "musicStyle": { "type": "string" },
+        "aspectRatio": { "type": "string" },
+        "resolution": { "type": "string" },
+        "targetDurationSec": { "type": "integer" },
+        "estimatedCredits": { "type": "integer" },
+        "status": { "type": "string", "enum": ["draft", "scripting", "storyboard_ready", "queued", "processing", "paused", "completed", "failed"] },
+        "publicProject": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "genre", "aspectRatio", "resolution", "targetDurationSec", "status", "createdAt", "updatedAt"]
+    },
+    "Movie": {
+      "title": "Movie",
+      "description": "Movie library item in My Movies",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "title": { "type": "string" },
+        "genre": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "resolution": { "type": "string" },
+        "aspectRatio": { "type": "string" },
+        "status": { "type": "string", "enum": ["completed", "processing", "draft", "failed"] },
+        "thumbnailData": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "subtitlesText": { "type": "string" },
+        "favorite": { "type": "boolean" },
+        "downloaded": { "type": "boolean" },
+        "publicMovie": { "type": "boolean" },
+        "lastViewedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "projectId", "title", "genre", "durationSec", "resolution", "status", "createdAt", "updatedAt"]
+    },
+    "Scene": {
+      "title": "Scene",
+      "description": "Individual scene in a movie project",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "sceneNumber": { "type": "integer" },
+        "title": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "cameraInstruction": { "type": "string" },
+        "shotDescription": { "type": "string" },
+        "narration": { "type": "string" },
+        "dialogue": { "type": "string" },
+        "soundEffects": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "storyboardData": { "type": "string" },
+        "status": { "type": "string", "enum": ["planned", "storyboarded", "rendering", "completed", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "projectId", "sceneNumber", "title", "durationSec", "status", "createdAt", "updatedAt"]
+    },
+    "Clip": {
+      "title": "Clip",
+      "description": "Ordered video/timeline clip belonging to a project",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "sceneId": { "type": "string" },
+        "clipOrder": { "type": "integer" },
+        "title": { "type": "string" },
+        "prompt": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "trimStartMs": { "type": "integer" },
+        "trimEndMs": { "type": "integer" },
+        "transitionType": { "type": "string" },
+        "subtitleText": { "type": "string" },
+        "voiceoverText": { "type": "string" },
+        "musicTrackName": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "processing", "completed", "failed", "cancelled"] },
+        "errorMessage": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "projectId", "sceneId", "clipOrder", "durationSec", "status", "createdAt", "updatedAt"]
+    },
+    "GenerationJob": {
+      "title": "GenerationJob",
+      "description": "Resumable multi-scene movie generation job",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "movieTitle": { "type": "string" },
+        "jobType": { "type": "string", "enum": ["text_to_movie", "image_to_movie", "script_to_movie", "stitch"] },
+        "status": { "type": "string", "enum": ["queued", "processing", "paused", "completed", "failed", "cancelled"] },
+        "totalScenes": { "type": "integer" },
+        "totalClips": { "type": "integer" },
+        "completedClips": { "type": "integer" },
+        "failedClips": { "type": "integer" },
+        "estimatedCredits": { "type": "integer" },
+        "creditsCharged": { "type": "integer" },
+        "idempotencyKey": { "type": "string" },
+        "providerId": { "type": "string" },
+        "errorMessage": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "projectId", "movieTitle", "jobType", "status", "totalScenes", "totalClips", "completedClips", "estimatedCredits", "creditsCharged", "idempotencyKey", "createdAt", "updatedAt"]
+    },
+    "Character": {
+      "title": "Character",
+      "description": "Reusable character profile and reference sheet",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "ageRange": { "type": "string" },
+        "appearance": { "type": "string" },
+        "clothing": { "type": "string" },
+        "hairstyle": { "type": "string" },
+        "facialExpression": { "type": "string" },
+        "bodyPosture": { "type": "string" },
+        "voiceProfile": { "type": "string" },
+        "fictional": { "type": "boolean" },
+        "likenessConsentConfirmed": { "type": "boolean" },
+        "referenceImageData": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "role", "fictional", "likenessConsentConfirmed", "createdAt", "updatedAt"]
+    },
+    "ScriptDoc": {
+      "title": "ScriptDoc",
+      "description": "Movie script document with non-destructive AI suggestion draft",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "title": { "type": "string" },
+        "synopsis": { "type": "string" },
+        "charactersSummary": { "type": "string" },
+        "content": { "type": "string" },
+        "aiSuggestion": { "type": "string" },
+        "version": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "projectId", "title", "content", "version", "createdAt", "updatedAt"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "User subscription plan and generation limits",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "planId": { "type": "string", "enum": ["free", "creator_pro", "studio_ultra"] },
+        "planName": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "cancelled", "expired"] },
+        "monthlyCredits": { "type": "integer" },
+        "maxDurationSec": { "type": "integer" },
+        "maxResolution": { "type": "string" },
+        "maxSimultaneousProjects": { "type": "integer" },
+        "storageQuotaMb": { "type": "integer" },
+        "priceUsd": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "planId", "planName", "status", "monthlyCredits", "maxDurationSec", "updatedAt"]
+    },
+    "CreditBalance": {
+      "title": "CreditBalance",
+      "description": "User credit wallet",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "balance": { "type": "integer" },
+        "promoCredits": { "type": "integer" },
+        "lifetimeEarned": { "type": "integer" },
+        "lifetimeSpent": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "balance", "promoCredits", "lifetimeEarned", "lifetimeSpent", "updatedAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Credit and subscription transaction audit record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["welcome_bonus", "promo_grant", "admin_adjustment", "generation_charge", "subscription_upgrade", "refund"] },
+        "amountCredits": { "type": "integer" },
+        "amountUsd": { "type": "number" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["completed", "pending", "failed", "reversed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "amountCredits", "description", "status", "createdAt"]
+    },
+    "DownloadRecord": {
+      "title": "DownloadRecord",
+      "description": "User movie export/download record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "movieId": { "type": "string" },
+        "movieTitle": { "type": "string" },
+        "resolution": { "type": "string" },
+        "format": { "type": "string" },
+        "fileUri": { "type": "string" },
+        "status": { "type": "string", "enum": ["completed", "downloading", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "movieId", "movieTitle", "resolution", "format", "status", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "In-app user notification",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "category": { "type": "string" },
+        "readFlag": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "message", "readFlag", "createdAt"]
+    },
+    "AdminSetting": {
+      "title": "AdminSetting",
+      "description": "Platform configuration managed exclusively by Founder/Admin",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "providerName": { "type": "string" },
+        "providerBaseUrl": { "type": "string" },
+        "providerConfigured": { "type": "boolean" },
+        "maxFreeDurationSec": { "type": "integer" },
+        "maxPaidDurationSec": { "type": "integer" },
+        "promoOfferTitle": { "type": "string" },
+        "promoBonusCredits": { "type": "integer" },
+        "paymentProviderName": { "type": "string" },
+        "paymentConfigured": { "type": "boolean" },
+        "updatedBy": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["key", "providerName", "providerConfigured", "updatedAt"]
+    },
+    "SecurityLog": {
+      "title": "SecurityLog",
+      "description": "User session and security event log",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "event": { "type": "string" },
+        "deviceInfo": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "event", "deviceInfo", "status", "createdAt"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "User support request or bug report",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "subject", "message", "status", "createdAt", "updatedAt"]
+    },
+    "CommunityTemplate": {
+      "title": "CommunityTemplate",
+      "description": "Published AI video template in the Spark AI Community hub",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "creatorUsername": { "type": "string" },
+        "creatorAvatarUrl": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "previewVideoUrl": { "type": "string" },
+        "thumbnailData": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "aspectRatio": { "type": "string" },
+        "requiredInputs": { "type": "string" },
+        "effectsSummary": { "type": "string" },
+        "tags": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private", "unlisted"] },
+        "allowReuse": { "type": "boolean" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "remixesCount": { "type": "integer" },
+        "trendingScore": { "type": "integer" },
+        "moderationStatus": { "type": "string", "enum": ["active", "flagged", "removed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "creatorUsername", "title", "category", "durationSec", "aspectRatio", "visibility", "allowReuse", "moderationStatus", "createdAt", "updatedAt"]
+    },
+    "TemplatePrompt": {
+      "title": "TemplatePrompt",
+      "description": "Reusable AI prompt separated from the original video",
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private", "unlisted"] },
+        "allowReuse": { "type": "boolean" },
+        "basePrompt": { "type": "string" },
+        "sceneDescription": { "type": "string" },
+        "characterTemplate": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["templateId", "creatorId", "visibility", "allowReuse", "basePrompt", "updatedAt"]
+    },
+    "TemplateSettingsDoc": {
+      "title": "TemplateSettingsDoc",
+      "description": "Reusable generation settings for a community template",
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private", "unlisted"] },
+        "allowReuse": { "type": "boolean" },
+        "cameraMovement": { "type": "string" },
+        "lighting": { "type": "string" },
+        "videoStyle": { "type": "string" },
+        "voiceStyle": { "type": "string" },
+        "musicStyle": { "type": "string" },
+        "aspectRatio": { "type": "string" },
+        "resolution": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["templateId", "creatorId", "visibility", "allowReuse", "aspectRatio", "durationSec", "updatedAt"]
+    },
+    "TemplateLike": {
+      "title": "TemplateLike",
+      "description": "User like on a community template",
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["templateId", "userId", "createdAt"]
+    },
+    "TemplateComment": {
+      "title": "TemplateComment",
+      "description": "Comment on a community template",
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["templateId", "userId", "username", "text", "createdAt"]
+    },
+    "TemplateRemix": {
+      "title": "TemplateRemix",
+      "description": "Remix record linking a user creation to its original template and creator",
+      "type": "object",
+      "properties": {
+        "originalTemplateId": { "type": "string" },
+        "originalTemplateTitle": { "type": "string" },
+        "originalCreatorId": { "type": "string" },
+        "originalCreatorName": { "type": "string" },
+        "remixerUserId": { "type": "string" },
+        "remixerUsername": { "type": "string" },
+        "newProjectId": { "type": "string" },
+        "newMovieTitle": { "type": "string" },
+        "customPrompt": { "type": "string" },
+        "previewVideoUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["originalTemplateId", "originalCreatorId", "originalCreatorName", "remixerUserId", "remixerUsername", "newProjectId", "newMovieTitle", "createdAt"]
+    },
+    "CreatorProfile": {
+      "title": "CreatorProfile",
+      "description": "Public creator profile metrics and bio",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "username": { "type": "string" },
+        "displayName": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "bio": { "type": "string" },
+        "publishedCount": { "type": "integer" },
+        "followersCount": { "type": "integer" },
+        "totalLikes": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "username", "displayName", "publishedCount", "followersCount", "totalLikes", "updatedAt"]
+    },
+    "CreatorFollower": {
+      "title": "CreatorFollower",
+      "description": "Follow relationship between users and creators",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "followerId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "followerId", "createdAt"]
+    },
+    "TemplateReport": {
+      "title": "TemplateReport",
+      "description": "Community safety report for copyright, consent, or policy violations",
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "reporterId": { "type": "string" },
+        "reason": { "type": "string" },
+        "details": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "reviewed", "action_taken"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["templateId", "creatorId", "reporterId", "reason", "status", "createdAt"]
+    },
+    "SocialPost": {
+      "title": "SocialPost",
+      "description": "Universal published Spark AI social video/template post",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "creatorUsername": { "type": "string" },
+        "creatorAvatarUrl": { "type": "string" },
+        "creationType": { "type": "string" },
+        "title": { "type": "string" },
+        "caption": { "type": "string" },
+        "hashtags": { "type": "string" },
+        "category": { "type": "string" },
+        "previewVideoUrl": { "type": "string" },
+        "thumbnailData": { "type": "string" },
+        "durationSec": { "type": "integer" },
+        "aspectRatio": { "type": "string" },
+        "resolution": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private", "unlisted"] },
+        "allowComments": { "type": "boolean" },
+        "allowReuse": { "type": "boolean" },
+        "allowDownload": { "type": "boolean" },
+        "viewsCount": { "type": "integer" },
+        "uniqueViewersCount": { "type": "integer" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "sharesCount": { "type": "integer" },
+        "moderationStatus": { "type": "string", "enum": ["active", "flagged", "removed"] },
+        "linkedProjectId": { "type": "string" },
+        "linkedTemplateId": { "type": "string" },
+        "originalCreatorName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "creatorUsername", "creationType", "title", "category", "durationSec", "visibility", "allowComments", "allowReuse", "allowDownload", "viewsCount", "uniqueViewersCount", "likesCount", "commentsCount", "sharesCount", "moderationStatus", "createdAt", "updatedAt"]
+    },
+    "PostView": {
+      "title": "PostView",
+      "description": "Unique viewer playback record for a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postCreatorId": { "type": "string" },
+        "viewerUserId": { "type": "string" },
+        "viewerUsername": { "type": "string" },
+        "viewerAvatarUrl": { "type": "string" },
+        "viewerPublic": { "type": "boolean" },
+        "viewCount": { "type": "integer" },
+        "lastViewedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postCreatorId", "viewerUserId", "viewerPublic", "viewCount", "lastViewedAt", "createdAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Unique user like on a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postCreatorId": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "userPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postCreatorId", "userId", "username", "userPublic", "createdAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment or reply on a social post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postCreatorId": { "type": "string" },
+        "parentCommentId": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "text": { "type": "string" },
+        "likesCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postCreatorId", "userId", "username", "text", "likesCount", "createdAt"]
+    },
+    "PostShare": {
+      "title": "PostShare",
+      "description": "Tracked share event for a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postCreatorId": { "type": "string" },
+        "sharerUserId": { "type": "string" },
+        "sharerUsername": { "type": "string" },
+        "channel": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postCreatorId", "sharerUserId", "channel", "createdAt"]
+    },
+    "StoryItem": {
+      "title": "StoryItem",
+      "description": "24-hour Spark Social story item",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "creatorUsername": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["photo", "video", "text"] },
+        "visibility": { "type": "string", "enum": ["public", "followers", "private"] },
+        "viewsCount": { "type": "integer" },
+        "expiresAtMs": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "creatorUsername", "mediaType", "visibility", "viewsCount", "expiresAtMs", "createdAt"]
+    },
+    "ConversationThread": {
+      "title": "ConversationThread",
+      "description": "1-to-1 Spark Social direct message conversation",
+      "type": "object",
+      "properties": {
+        "participantIds": { "type": "array" },
+        "lastMessageText": { "type": "string" },
+        "lastSenderId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participantIds", "lastSenderId", "createdAt", "updatedAt"]
+    },
+    "DirectMessage": {
+      "title": "DirectMessage",
+      "description": "Encrypted-in-transit direct message supporting text, photo, video, voice note, and audio",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "messageType": { "type": "string", "enum": ["text", "image", "video", "voice", "audio"] },
+        "text": { "type": "string" },
+        "deliveryStatus": { "type": "string", "enum": ["sent", "delivered", "read"] },
+        "deletedForAll": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "senderId", "receiverId", "messageType", "deliveryStatus", "deletedForAll", "createdAt"]
+    },
+    "LiveStreamSession": {
+      "title": "LiveStreamSession",
+      "description": "Live broadcast metadata strictly gated by configured streaming backend",
+      "type": "object",
+      "properties": {
+        "hostId": { "type": "string" },
+        "hostUsername": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["live", "ended"] },
+        "viewerCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["hostId", "hostUsername", "title", "status", "createdAt"]
+    },
+    "SparkGuideArticle": {
+      "title": "SparkGuideArticle",
+      "description": "Founder-managed Spark Guide knowledge base article",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "stepsSummary": { "type": "string" },
+        "keywords": { "type": "string" },
+        "published": { "type": "boolean" },
+        "updatedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "stepsSummary", "published", "updatedBy", "createdAt", "updatedAt"]
+    },
+    "SparkGuideConversation": {
+      "title": "SparkGuideConversation",
+      "description": "User Spark Guide assistant conversation thread",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "contextSection": { "type": "string" },
+        "language": { "type": "string" },
+        "lastMessagePreview": { "type": "string" },
+        "messageCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "language", "messageCount", "createdAt", "updatedAt"]
+    },
+    "SparkGuideMessage": {
+      "title": "SparkGuideMessage",
+      "description": "Individual user or assistant message in a Spark Guide conversation",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "assistant"] },
+        "text": { "type": "string" },
+        "offlineFallback": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "userId", "role", "text", "offlineFallback", "createdAt"]
+    },
+    "RecentlyDeletedItem": {
+      "title": "RecentlyDeletedItem",
+      "description": "Soft-deleted post, movie, or project held in 30-day Recycle Bin",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "itemType": { "type": "string", "enum": ["post", "movie", "project"] },
+        "originalId": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "creationType": { "type": "string" },
+        "previewVideoUrl": { "type": "string" },
+        "thumbnailData": { "type": "string" },
+        "payloadJson": { "type": "string" },
+        "deletedAtMs": { "type": "integer" },
+        "expiresAtMs": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "itemType", "originalId", "title", "deletedAtMs", "expiresAtMs", "createdAt"]
+    },
+    "ActiveSessionItem": {
+      "title": "ActiveSessionItem",
+      "description": "Persistent multi-device session record supporting remote revocation",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "username": { "type": "string" },
+        "deviceLabel": { "type": "string" },
+        "platform": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "revoked"] },
+        "currentSession": { "type": "boolean" },
+        "lastActiveAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "deviceLabel", "platform", "status", "lastActiveAt", "createdAt"]
+    },
+    "SecurityAlertItem": {
+      "title": "SecurityAlertItem",
+      "description": "Security anomaly, login, rate-limit, or user-reported alert",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "alertType": { "type": "string" },
+        "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "deviceLabel": { "type": "string" },
+        "resolvedFlag": { "type": "boolean" },
+        "resolvedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "alertType", "severity", "title", "resolvedFlag", "createdAt", "updatedAt"]
+    },
+    "AuditLogItem": {
+      "title": "AuditLogItem",
+      "description": "Append-only security and administrative audit log record",
+      "type": "object",
+      "properties": {
+        "actorUserId": { "type": "string" },
+        "actorEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "targetCollection": { "type": "string" },
+        "targetId": { "type": "string" },
+        "summary": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["actorUserId", "action", "targetCollection", "targetId", "summary", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "User account records"
+    },
+    "/userProfiles/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User studio profile and preferences"
+    },
+    "/users/{userId}/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/MovieProject" },
+      "description": "User movie projects"
+    },
+    "/users/{userId}/movies/{movieId}": {
+      "schema": { "$ref": "#/entities/Movie" },
+      "description": "User movie library items"
+    },
+    "/users/{userId}/projects/{projectId}/scenes/{sceneId}": {
+      "schema": { "$ref": "#/entities/Scene" },
+      "description": "Scenes within a movie project"
+    },
+    "/users/{userId}/projects/{projectId}/clips/{clipId}": {
+      "schema": { "$ref": "#/entities/Clip" },
+      "description": "Ordered clips within a movie project"
+    },
+    "/users/{userId}/generationJobs/{jobId}": {
+      "schema": { "$ref": "#/entities/GenerationJob" },
+      "description": "Movie generation jobs"
+    },
+    "/users/{userId}/characters/{characterId}": {
+      "schema": { "$ref": "#/entities/Character" },
+      "description": "Saved characters"
+    },
+    "/users/{userId}/scripts/{scriptId}": {
+      "schema": { "$ref": "#/entities/ScriptDoc" },
+      "description": "Movie scripts"
+    },
+    "/users/{userId}/subscriptions/{subId}": {
+      "schema": { "$ref": "#/entities/Subscription" },
+      "description": "User subscription plan"
+    },
+    "/users/{userId}/credits/{creditId}": {
+      "schema": { "$ref": "#/entities/CreditBalance" },
+      "description": "User credit balance"
+    },
+    "/users/{userId}/transactions/{txId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "Credit and billing transactions"
+    },
+    "/users/{userId}/downloads/{downloadId}": {
+      "schema": { "$ref": "#/entities/DownloadRecord" },
+      "description": "User downloads"
+    },
+    "/users/{userId}/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User notifications"
+    },
+    "/users/{userId}/securityLogs/{logId}": {
+      "schema": { "$ref": "#/entities/SecurityLog" },
+      "description": "User security logs"
+    },
+    "/users/{userId}/supportTickets/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "User support tickets"
+    },
+    "/adminSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/AdminSetting" },
+      "description": "Platform-wide provider and pricing configuration"
+    },
+    "/communityTemplates/{templateId}": {
+      "schema": { "$ref": "#/entities/CommunityTemplate" },
+      "description": "Published community video templates"
+    },
+    "/templatePrompts/{templateId}": {
+      "schema": { "$ref": "#/entities/TemplatePrompt" },
+      "description": "Reusable prompts per template"
+    },
+    "/templateSettings/{templateId}": {
+      "schema": { "$ref": "#/entities/TemplateSettingsDoc" },
+      "description": "Reusable generation settings per template"
+    },
+    "/templateLikes/{likeId}": {
+      "schema": { "$ref": "#/entities/TemplateLike" },
+      "description": "Template likes"
+    },
+    "/templateComments/{commentId}": {
+      "schema": { "$ref": "#/entities/TemplateComment" },
+      "description": "Template comments"
+    },
+    "/templateRemixes/{remixId}": {
+      "schema": { "$ref": "#/entities/TemplateRemix" },
+      "description": "Remixes linked to original templates"
+    },
+    "/creatorProfiles/{creatorId}": {
+      "schema": { "$ref": "#/entities/CreatorProfile" },
+      "description": "Public creator profiles"
+    },
+    "/creatorFollowers/{followId}": {
+      "schema": { "$ref": "#/entities/CreatorFollower" },
+      "description": "Creator follower links"
+    },
+    "/templateReports/{reportId}": {
+      "schema": { "$ref": "#/entities/TemplateReport" },
+      "description": "Community safety & copyright reports"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/SocialPost" },
+      "description": "Published social video, photo, music, and template posts"
+    },
+    "/postViews/{viewId}": {
+      "schema": { "$ref": "#/entities/PostView" },
+      "description": "Deduplicated video view events"
+    },
+    "/postLikes/{likeId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Deduplicated post likes"
+    },
+    "/postComments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Post comments and replies"
+    },
+    "/postShares/{shareId}": {
+      "schema": { "$ref": "#/entities/PostShare" },
+      "description": "Tracked post shares"
+    },
+    "/stories/{storyId}": {
+      "schema": { "$ref": "#/entities/StoryItem" },
+      "description": "24-hour Spark Social stories"
+    },
+    "/conversations/{convId}": {
+      "schema": { "$ref": "#/entities/ConversationThread" },
+      "description": "1-to-1 private conversation threads"
+    },
+    "/conversations/{convId}/messages/{msgId}": {
+      "schema": { "$ref": "#/entities/DirectMessage" },
+      "description": "Direct messages within a conversation"
+    },
+    "/liveStreams/{streamId}": {
+      "schema": { "$ref": "#/entities/LiveStreamSession" },
+      "description": "Live broadcast sessions"
+    },
+    "/sparkGuideArticles/{articleId}": {
+      "schema": { "$ref": "#/entities/SparkGuideArticle" },
+      "description": "Founder-managed Spark Guide knowledge base articles"
+    },
+    "/users/{userId}/sparkGuideChats/{chatId}": {
+      "schema": { "$ref": "#/entities/SparkGuideConversation" },
+      "description": "User Spark Guide conversation threads"
+    },
+    "/users/{userId}/sparkGuideChats/{chatId}/messages/{msgId}": {
+      "schema": { "$ref": "#/entities/SparkGuideMessage" },
+      "description": "Messages inside a Spark Guide conversation"
+    },
+    "/users/{userId}/recentlyDeleted/{itemId}": {
+      "schema": { "$ref": "#/entities/RecentlyDeletedItem" },
+      "description": "30-day Recycle Bin for deleted posts, movies, and projects"
+    },
+    "/users/{userId}/activeSessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/ActiveSessionItem" },
+      "description": "Active and revoked device sessions per user"
+    },
+    "/securityAlerts/{alertId}": {
+      "schema": { "$ref": "#/entities/SecurityAlertItem" },
+      "description": "Security alerts visible to affected user and Founder Admin"
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLogItem" },
+      "description": "Immutable administrative and security audit log"
+    }
+  }
+}

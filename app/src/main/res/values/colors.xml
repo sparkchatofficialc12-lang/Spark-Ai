@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="midnight_black">#FF101820</color>
+    <color name="secondary_slate">#FF19232D</color>
+    <color name="champagne_gold">#FFD6AD60</color>
+    <color name="soft_gold">#FFE8C77E</color>
+    <color name="ice_white">#FFF5F7FA</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
